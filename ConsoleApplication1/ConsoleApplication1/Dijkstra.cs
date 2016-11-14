@@ -9,7 +9,8 @@ namespace ConsoleApplication1
     class Dijkstra
     {
         public int[,] Matriisi { get; set; }
-        private int[] visited, distance, via, indexes;
+        private int[] visited, distance, via;
+        private List<int> inde;
         private int start, current;
         private bool finished;
 
@@ -20,9 +21,9 @@ namespace ConsoleApplication1
             current = start;
             Matriisi = matriisi;
             visited = new int[(int)Math.Sqrt(matriisi.Length)];
-            distance = new int[(int)Math.Sqrt(matriisi.Length)];
-            via = new int[(int)Math.Sqrt(matriisi.Length)];
-            indexes = new int[(int)Math.Sqrt(matriisi.Length)];
+            distance = new int[visited.Length];
+            via = new int[visited.Length];
+            inde = new List<int>();
             for (int i = 0; i < distance.Length; i++)
             {
                 distance[i] = int.MaxValue;
@@ -32,7 +33,7 @@ namespace ConsoleApplication1
         }
         public void Calculate()
         {
-            int[] tdistance = new int[(int)Math.Sqrt(Matriisi.Length)];
+            int[] tdistance = new int[visited.Length];
             int round = 0;
             while (finished != true)
             {
@@ -54,13 +55,16 @@ namespace ConsoleApplication1
                 visited[round] = current;
                 for (int i = 0; i < tdistance.Length; i++)
                 {
+                    inde.Clear();
                     int former = current;
-                    for (int j = 0; j < tdistance.Length; j++)
+                    for (int j = 0; j < distance.Length; j++)
                     {
-                        indexes[j] = -1;
-                        if (distance[j] == tdistance[i]) { indexes[j] = j; }
+                        if (distance[j] == tdistance[i])
+                        {
+                            inde.Add(j);
+                        }
                     }
-                    foreach (int value in indexes)
+                    foreach (int value in inde)
                     {
                         if (tdistance[i] >= distance[current] && Array.IndexOf(visited, value) == -1 && value != -1)
                         {
@@ -70,7 +74,7 @@ namespace ConsoleApplication1
                     }
                     if (former != current) { break; }
                 }
-                if (Array.FindIndex(visited, item => item == -1) == -1) { finished = true; }
+                if (Array.IndexOf(visited, -1) == -1) { finished = true; }
                 round++;
             }
             Console.WriteLine("Vertex:  Distance:   Via:");
