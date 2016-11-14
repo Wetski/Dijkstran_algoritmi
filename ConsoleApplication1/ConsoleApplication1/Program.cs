@@ -53,7 +53,7 @@ namespace ConsoleApplication1
             Matriisi[4, 1] = 2;
             Matriisi[4, 2] = 5;
             Matriisi[4, 3] = 1;
-            Dijkstra Algoritmi = new Dijkstra(Matriisi, 0);
+            Dijkstra Algoritmi = new Dijkstra(Matriisi, 2);
             Algoritmi.Calculate();
         }
     }

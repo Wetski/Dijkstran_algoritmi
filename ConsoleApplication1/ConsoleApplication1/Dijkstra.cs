@@ -83,6 +83,7 @@ namespace ConsoleApplication1
                 else { Console.WriteLine(via[i]); }
                 Console.WriteLine("---------------------------");
             }
+            Console.Read();
         }
     }
 }
