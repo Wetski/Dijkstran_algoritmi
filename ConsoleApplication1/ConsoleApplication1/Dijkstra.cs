@@ -9,7 +9,7 @@ namespace ConsoleApplication1
     class Dijkstra
     {
         public int[,] Matriisi { get; set; }
-        private int[] visited, distance, via;
+        private int[] visited, distance, via, indexes;
         private int start, current;
         private bool finished;
 
@@ -22,6 +22,7 @@ namespace ConsoleApplication1
             visited = new int[(int)Math.Sqrt(matriisi.Length)];
             distance = new int[(int)Math.Sqrt(matriisi.Length)];
             via = new int[(int)Math.Sqrt(matriisi.Length)];
+            indexes = new int[(int)Math.Sqrt(matriisi.Length)];
             for (int i = 0; i < distance.Length; i++)
             {
                 distance[i] = int.MaxValue;
@@ -37,15 +38,15 @@ namespace ConsoleApplication1
             {
                 if (current == start)
                 {
-                    distance[round] = 0;
-                    via[round] = -1;
+                    distance[current] = 0;
+                    via[current] = -1;
                 }
                 for (int i = 0; i < distance.Length; i++)
                 {
                     if (Matriisi[current, i] != 0 && Matriisi[current, i] + distance[current] < distance[i])
                     {
-                        distance[round] = distance[current] + Matriisi[current, i];
-                        via[round] = current;
+                        distance[i] = distance[current] + Matriisi[current, i];
+                        via[i] = current;
                     }
                 }
                 tdistance = (int[])distance.Clone();
@@ -54,30 +55,33 @@ namespace ConsoleApplication1
                 for (int i = 0; i < tdistance.Length; i++)
                 {
                     int former = current;
-                    if (tdistance[i] >= distance[current] && visited[i] == -1)
+                    for (int j = 0; j < tdistance.Length; j++)
                     {
-                        for (int j = 0; j < distance.Length; j++)
-                        {
-                            if (distance[j] == tdistance[i] && visited[i] == -1)
-                            {
-                                current = j;
-                                break;
-                            }
-                        }
-                        //current = Array.IndexOf(distance, tdistance[i]);
+                        indexes[j] = -1;
+                        if (distance[j] == tdistance[i]) { indexes[j] = j; }
                     }
-                    if (current != former) { break; }
+                    foreach (int value in indexes)
+                    {
+                        if (tdistance[i] >= distance[current] && Array.IndexOf(visited, value) == -1 && value != -1)
+                        {
+                            current = value;
+                            break;
+                        }
+                    }
+                    if (former != current) { break; }
                 }
                 if (Array.FindIndex(visited, item => item == -1) == -1) { finished = true; }
                 round++;
             }
             Console.WriteLine("Embryo:  Distance:   Via:");
+            Console.WriteLine("---------------------------");
             for (int i = 0; i < visited.Length; i++)
             {
-                Console.Write(" {0}         ", visited[i]);
+                Console.Write(" {0}         ", i);
                 Console.Write("{0}          ", distance[i]);
                 if (via[i] == -1) { Console.WriteLine(" "); }
                 else { Console.WriteLine(via[i]); }
+                Console.WriteLine("---------------------------");
             }
         }
     }
