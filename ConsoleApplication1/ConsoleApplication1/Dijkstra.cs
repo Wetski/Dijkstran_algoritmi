@@ -73,7 +73,7 @@ namespace ConsoleApplication1
                 if (Array.FindIndex(visited, item => item == -1) == -1) { finished = true; }
                 round++;
             }
-            Console.WriteLine("Embryo:  Distance:   Via:");
+            Console.WriteLine("Vertex:  Distance:   Via:");
             Console.WriteLine("---------------------------");
             for (int i = 0; i < visited.Length; i++)
             {
