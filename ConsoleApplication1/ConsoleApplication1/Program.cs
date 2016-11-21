@@ -15,9 +15,9 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
-            Stopwatch timer = new Stopwatch();
+            Stopwatch timer = new Stopwatch();  //Luodaan ajastin.
             
-            int[,] Matriisi = new int[10, 10];
+            int[,] Matriisi = new int[10, 10];  //Manuaalinen matriisitaulukko. (Verkko)
             Matriisi[0, 1] = 10;
             Matriisi[0, 2] = 15;
             Matriisi[0, 9] = 67;
@@ -76,9 +76,9 @@ namespace ConsoleApplication1
                 name[i]++;
             }*/
 
-            Graph graafi = new Graph(2500);
+            Graph graafi = new Graph(2500); //Luodaan satunnaisverkko 
             timer.Start();
-            Dijkstra Algoritmi = new Dijkstra(graafi.Matriisi, 0, 7);
+            Dijkstra Algoritmi = new Dijkstra(graafi.Matriisi, 0, 7); 
             /*
             for (int i = 0; i < Math.Sqrt(graafi.Matriisi.Length); i++)
             {
@@ -87,7 +87,7 @@ namespace ConsoleApplication1
                 Console.WriteLine("{0}: {1}",i, timer.ElapsedMilliseconds);
             }*/
             timer.Stop();
-            Console.WriteLine(timer.ElapsedMilliseconds);
+            Console.WriteLine(timer.ElapsedMilliseconds); //Tulosteaan kulunut aika, mittaustuloksia varten.
             Console.Read();
         }
     }

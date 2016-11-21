@@ -14,8 +14,8 @@ namespace ConsoleApplication1
 {
     class Dijkstra
     {
-        public int[,] Matriisi { get; set; }
-        public int Start
+        public int[,] Matriisi { get; set; }    //Käytettävä 2-ulotteinen matriisitaulukko.
+        public int Start                        //Lähtöpiste
         {
             get
             {
@@ -26,16 +26,17 @@ namespace ConsoleApplication1
                 start = value;
             }
         }
-        private int[] visited, distance, via;
-        private List<int> inde;
-        private Stack<int> path;
-        private int start, current;
-        private bool finished;
+        private int[] visited, distance, via;   //Taulukot, vierrailtujen alkioiden, alkioiden etäisyydet ja periytynyt alkio
+        private List<int> inde;                 //Taulukko, jos on kaksi tai useampi yhtäpitkä etäisyys.
+        private Stack<int> path;                //Polku, lähtöpisteestä päätepisteeseen.
+        private int start, current;             //Start on lähtöpiste, Current on tutkittava piste
+        private bool finished;                  //Totuusarvo onko algoritmi valmis.
 
         public Dijkstra(int[,] matriisi, int s, int target)
         {
             start = s;
             Matriisi = matriisi;
+            //Alustetaan kaikki taulukot.
             visited = new int[(int)Math.Sqrt(matriisi.Length)];
             distance = new int[visited.Length];
             via = new int[visited.Length];
@@ -44,6 +45,7 @@ namespace ConsoleApplication1
             finished = false;
             for (int i = 0; i < distance.Length; i++)
             {
+                //Alustetaan alla olevien taulukoiden erikoisarvot.
                 distance[i] = int.MaxValue;
                 visited[i] = -1;
                 via[i] = -1;
@@ -52,10 +54,10 @@ namespace ConsoleApplication1
             current = start;
             int[] tdistance = new int[visited.Length];
             int round = 0;
+            //Aloitetaan algoritmi.
             while (finished != true)
             {
-                //Console.WriteLine(current);
-                if (current == start)
+                if (current == start)       //Jos tarkasteltava piste on aloituspiste niin sen etäisyys asetetaan nollaksi.
                 {
                     distance[current] = 0;
                     via[current] = -1;
@@ -63,39 +65,41 @@ namespace ConsoleApplication1
                 for (int i = 0; i < distance.Length; i++)
                 {
                     if (Matriisi[current, i] != 0 && Matriisi[current, i] + distance[current] < distance[i])
-                    {
+                                        {   //Jos tarkasteltavan pisteen ja i:n väli on 0 välissä ei ole linkkiä.
+                                            //Jos tarkasteltavan pisteen ja i:n väli on < kuin niinden välinen etäisyys asetetaan uusi etäisyys.
                         distance[i] = distance[current] + Matriisi[current, i];
-                        via[i] = current;
+                        via[i] = current;   //asetetaan perittävä piste
                     }
                 }
-                tdistance = (int[])distance.Clone();
-                Array.Sort(tdistance);
-                visited[round] = current;
-                for (int i = 0; i < tdistance.Length; i++)
+                tdistance = (int[])distance.Clone();    //Kloonataan etäisyyslista.
+                Array.Sort(tdistance);                  //Väliaikainen etäisyyslista lajitellaan.
+                visited[round] = current;               //Vierailtujenlistaan lisätään tarkasteltu piste.
+                for (int i = 0; i < tdistance.Length; i++)  //Silmukka, jossa katsotaan väliaikaislistan pituus.
                 {
-                    inde.Clear();
-                    int former = current;
+                    inde.Clear();                       //Tyhjennetään inde-lista.
+                    int former = current;               //Asetetaan muutosmuuttuja
                     for (int j = 0; j < distance.Length; j++)
                     {
-                        if (distance[j] == tdistance[i])
+                        if (distance[j] == tdistance[i])//Tarkastellaan lyhimmästä pisimpään järjestyksessä, mikä seuraavan tarkastelupisteen tulee olla.
                         {
-                            inde.Add(j);
+                            inde.Add(j);                //Lisätään kandidaatit listaan inde
                         }
                     }
-                    foreach (int value in inde)
+                    foreach (int value in inde)         //Käydään läpi inde lista
                     {
                         if (tdistance[i] >= distance[current] && Array.IndexOf(visited, value) == -1 && value != -1)
+                        //Jos väliaikaisetäisyys on >= tarkasteltava etäisyys JA vierailtujentaulukosta ei löydy kyseistä inde-listassa olevaa arvoa JA arvo != -1
                         {
-                            current = value;
+                            current = value;    //Asetetaan uudeksi tarkasteltavaksi pisteeksi inde-listan tämänhetkinen arvo.
                             break;
                         }
                     }
-                    if (former != current) { break; }
+                    if (former != current) { break; }   //Jos muutosmuuttujan ja tarkasteltavan pisteen välillä on ero on tarkasteltava piste vaihtunut.
                 }
-                if (Array.IndexOf(visited, -1) == -1) { finished = true; }
+                if (Array.IndexOf(visited, -1) == -1) { finished = true; } //Jos vierailtujen lista on täynnä on algoritmi valmis.
                 round++;
             }
-            Console.WriteLine("Vertex:  Distance:   Via:");
+            Console.WriteLine("Vertex:  Distance:   Via:"); //Tulostetaan selvästi luettava lista.
             Console.WriteLine("---------------------------");
             for (int i = 0; i < visited.Length; i++)
             {
@@ -105,7 +109,7 @@ namespace ConsoleApplication1
                 else { Console.WriteLine(via[i]); }
                 Console.WriteLine("---------------------------");
             }
-            while(true)
+            while(true) //Tulostetaan polku lähtöpisteestä päätepisteeseen.
             {
                 path.Push(target);
                 if(target == start)

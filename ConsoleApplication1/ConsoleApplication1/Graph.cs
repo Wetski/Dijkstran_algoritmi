@@ -12,7 +12,7 @@ namespace ConsoleApplication1
 {
     class Graph
     {
-        public int[,] Matriisi
+        public int[,] Matriisi  //Satunnaisverkon matriisitaulukko
         {
             get
             {
@@ -23,19 +23,19 @@ namespace ConsoleApplication1
         private int number;
         private int[,] matriisi;
 
-        public Graph(int vertices)
+        public Graph(int vertices)  //Konstruktori
         {
             matriisi = new int[vertices, vertices];
             random = new Random();
-            for (int i = 0; i < Math.Sqrt(matriisi.Length); i++)
+            for (int i = 0; i < Math.Sqrt(matriisi.Length); i++)    //For silmukka käy läpi matriisitaulukon alkioiden lukumäärän verran kierroksia
             {
-                int rand = random.Next(1, 5);
-                for (int j = 0; j < rand; j++)
+                int rand = random.Next(1, 5);                       //Satunnainen numero 1-4 väliltä
+                for (int j = 0; j < rand; j++)                      //For silmukka ylläolevan satunnaisluvun verran kierroksia
                 {
                     int temp = random.Next(1, 101);
                     while(true)
                     {
-                        number = random.Next(0, (int)Math.Sqrt(matriisi.Length));
+                        number = random.Next(0, (int)Math.Sqrt(matriisi.Length));   //Luodaan matriisitalukon linkit kahden eri alkion välille
                         if (i != number)
                         {
                             matriisi[i, number] = temp;
