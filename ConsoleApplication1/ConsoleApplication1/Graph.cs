@@ -1,8 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Copyright 2016 Veeti Karttunen, Niki Liuhanen, Aaro Lyytinen
+ *
+ * This is a part of Data structrures and Algorithms course assignment
+ * and is licensed under MIT license, see LICENSE file.
+ *
+ * Created: 21.11.2016
+ */
+using System;
 
 namespace ConsoleApplication1
 {
