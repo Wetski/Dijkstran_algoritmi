@@ -9,34 +9,46 @@ namespace ConsoleApplication1
     class Dijkstra
     {
         public int[,] Matriisi { get; set; }
+        public int Start
+        {
+            get
+            {
+                return start;
+            }
+            set
+            {
+                start = value;
+            }
+        }
         private int[] visited, distance, via;
         private List<int> inde;
+        private Stack<int> path;
         private int start, current;
         private bool finished;
 
-        public Dijkstra(int[,] matriisi, int s)
+        public Dijkstra(int[,] matriisi, int s, int target)
         {
-            finished = false;
             start = s;
-            current = start;
             Matriisi = matriisi;
             visited = new int[(int)Math.Sqrt(matriisi.Length)];
             distance = new int[visited.Length];
             via = new int[visited.Length];
             inde = new List<int>();
+            path = new Stack<int>();
+            finished = false;
             for (int i = 0; i < distance.Length; i++)
             {
                 distance[i] = int.MaxValue;
                 visited[i] = -1;
                 via[i] = -1;
             }
-        }
-        public void Calculate()
-        {
+            inde.Clear();
+            current = start;
             int[] tdistance = new int[visited.Length];
             int round = 0;
             while (finished != true)
             {
+                //Console.WriteLine(current);
                 if (current == start)
                 {
                     distance[current] = 0;
@@ -87,7 +99,19 @@ namespace ConsoleApplication1
                 else { Console.WriteLine(via[i]); }
                 Console.WriteLine("---------------------------");
             }
-            Console.Read();
+            while(true)
+            {
+                path.Push(target);
+                if(target == start)
+                {
+                    break;
+                }
+                target = via[target];
+            }
+            while(path.Count() != 0)
+            {
+                Console.Write("{0}, ", path.Pop());
+            }
         }
     }
 }
